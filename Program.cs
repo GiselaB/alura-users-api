@@ -14,7 +14,9 @@ builder.Services.AddDbContext<UserDbContext>(opts =>
                 .GetConnectionString("UsuarioConnection"),
                 new MySqlServerVersion(new Version(8, 0))
             ));
-builder.Services.AddIdentity<IdentityUser<int>, IdentityRole<int>>()
+builder.Services.AddIdentity<IdentityUser<int>, IdentityRole<int>>(
+    opts => opts.SignIn.RequireConfirmedEmail = true
+    )
     .AddEntityFrameworkStores<UserDbContext>();
 builder.Services.AddScoped<CadastroService, CadastroService>();
 builder.Services.AddScoped<LoginService, LoginService>();
