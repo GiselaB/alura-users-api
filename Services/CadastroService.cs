@@ -20,8 +20,13 @@ namespace UsuariosAPI.Services
         {
             Usuario usuario = _mapper.Map<Usuario>(usuarioDto);
             IdentityUser<int> usuarioIdentity = _mapper.Map<IdentityUser<int>>(usuario);
-            Task<IdentityResult> resultadoIdentity = _userManager.CreateAsync(usuarioIdentity, usuarioDto.Password);
-            if (resultadoIdentity.Result.Succeeded) return Result.Ok();
+            Task<IdentityResult> resultadoIdentity = _userManager
+                .CreateAsync(usuarioIdentity, usuarioDto.Password);
+            if (resultadoIdentity.Result.Succeeded)
+            {
+                var code = _userManager.GenerateEmailConfirmationTokenAsync(usuarioIdentity).Result;
+                return Result.Ok().WithSuccess(code);
+            }
 
             return Result.Fail("Houve uma falha ao criar o usuário");
         }

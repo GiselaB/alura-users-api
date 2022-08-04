@@ -17,7 +17,8 @@ builder.Services.AddDbContext<UserDbContext>(opts =>
 builder.Services.AddIdentity<IdentityUser<int>, IdentityRole<int>>(
     opts => opts.SignIn.RequireConfirmedEmail = true
     )
-    .AddEntityFrameworkStores<UserDbContext>();
+    .AddEntityFrameworkStores<UserDbContext>()
+    .AddDefaultTokenProviders();
 builder.Services.AddScoped<CadastroService, CadastroService>();
 builder.Services.AddScoped<LoginService, LoginService>();
 builder.Services.AddScoped<TokenService, TokenService>();
