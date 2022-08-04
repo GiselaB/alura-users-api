@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using FluentResults;
 using Microsoft.AspNetCore.Identity;
+using System.Web;
 using UsuariosAPI.Data.Dtos;
 using UsuariosAPI.Data.Requests;
 using UsuariosAPI.Models;
@@ -11,11 +12,13 @@ namespace UsuariosAPI.Services
     {
         private IMapper _mapper;
         private UserManager<IdentityUser<int>> _userManager;
+        private EmailService _emailService;
 
-        public CadastroService(IMapper mapper, UserManager<IdentityUser<int>> userManager)
+        public CadastroService(IMapper mapper, UserManager<IdentityUser<int>> userManager, EmailService emailService)
         {
             _mapper = mapper;
             _userManager = userManager;
+            _emailService = emailService;
         }
         internal Result CadastraUsuario(CreateUsuarioDto usuarioDto)
         {
@@ -26,10 +29,12 @@ namespace UsuariosAPI.Services
             if (resultadoIdentity.Result.Succeeded)
             {
                 var code = _userManager.GenerateEmailConfirmationTokenAsync(usuarioIdentity).Result;
+                var encodedCode = HttpUtility.UrlEncode(code);
+                _emailService.EnviarEmail(new[] {usuarioIdentity.Email}, "Link de ativação", usuarioIdentity.Id, encodedCode);
                 return Result.Ok().WithSuccess(code);
             }
 
-            return Result.Fail("Houve uma falha ao criar o usuário");
+            return Result.Fail("Falha ao cadastrar usuário");
         }
 
         public Result AtivaContaUsuario(AtivaContaRequest request)
