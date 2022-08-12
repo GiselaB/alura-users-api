@@ -1,8 +1,8 @@
 # alura-movies-api
 
-WebAPI created using .Net Core and following the [".NET 5 and Identity: implementing user control"](https://cursos.alura.com.br/course/net-5-identity-controle-usuario) course available at Alura.
+WebAPI created using .Net Core and following the [".NET 5 and Identity: implementing user control"](https://cursos.alura.com.br/course/net-5-identity-controle-usuario) and [".NET 5 and Identity: authenticating and authorizing users"](https://cursos.alura.com.br/course/net-5-identity-autenticando-autorizando-usuarios) courses available at Alura.
 
-- This project uses .NET 6 and MySQL 8 unlike the course.
+- This project uses .NET 6 and MySQL 8 unlike the courses.
 
 ### Build
 
@@ -12,4 +12,4 @@ WebAPI created using .Net Core and following the [".NET 5 and Identity: implemen
 
 `dotnet watch run`
 
-You can find more instructions in the course linked previously.
+You can find more instructions in the courses linked previously.
