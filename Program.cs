@@ -15,10 +15,11 @@ builder.Services.AddDbContext<UserDbContext>(opts =>
                 new MySqlServerVersion(new Version(8, 0))
             ));
 builder.Services.AddIdentity<IdentityUser<int>, IdentityRole<int>>(
-    opts => opts.SignIn.RequireConfirmedEmail = true
+    /*opts => opts.SignIn.RequireConfirmedEmail = true*/
     )
     .AddEntityFrameworkStores<UserDbContext>()
     .AddDefaultTokenProviders();
+builder.Host.ConfigureAppConfiguration((context, builder) => builder.AddUserSecrets<Program>());
 builder.Services.AddScoped<CadastroService, CadastroService>();
 builder.Services.AddScoped<LoginService, LoginService>();
 builder.Services.AddScoped<TokenService, TokenService>();
