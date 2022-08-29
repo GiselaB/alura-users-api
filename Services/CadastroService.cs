@@ -11,24 +11,21 @@ namespace UsuariosAPI.Services
     public class CadastroService
     {
         private IMapper _mapper;
-        private UserManager<IdentityUser<int>> _userManager;
+        private UserManager<CustomIdentityUser> _userManager;
         private EmailService _emailService;
-        private RoleManager<IdentityRole<int>> _roleManager;
 
         public CadastroService(IMapper mapper, 
-            UserManager<IdentityUser<int>> userManager, 
-            EmailService emailService, 
-            RoleManager<IdentityRole<int>> roleManager)
+            UserManager<CustomIdentityUser> userManager, 
+            EmailService emailService)
         {
             _mapper = mapper;
             _userManager = userManager;
             _emailService = emailService;
-            _roleManager = roleManager;
         }
         public async Task<Result> CadastraUsuario(CreateUsuarioDto usuarioDto)
         {
             Usuario usuario = _mapper.Map<Usuario>(usuarioDto);
-            IdentityUser<int> usuarioIdentity = _mapper.Map<IdentityUser<int>>(usuario);
+            var usuarioIdentity = _mapper.Map<CustomIdentityUser>(usuario);
             var result = await _userManager.CreateAsync(usuarioIdentity, usuarioDto.Password);
 
             // essa parte não funciona
