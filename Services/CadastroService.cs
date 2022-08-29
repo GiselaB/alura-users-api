@@ -25,25 +25,21 @@ namespace UsuariosAPI.Services
             _emailService = emailService;
             _roleManager = roleManager;
         }
-        internal Result CadastraUsuario(CreateUsuarioDto usuarioDto)
+        public async Task<Result> CadastraUsuario(CreateUsuarioDto usuarioDto)
         {
             Usuario usuario = _mapper.Map<Usuario>(usuarioDto);
             IdentityUser<int> usuarioIdentity = _mapper.Map<IdentityUser<int>>(usuario);
-            Task<IdentityResult> resultadoIdentity = _userManager
-                .CreateAsync(usuarioIdentity, usuarioDto.Password);
+            var result = await _userManager.CreateAsync(usuarioIdentity, usuarioDto.Password);
 
-            var createRoleResult = _roleManager
-                .CreateAsync(new IdentityRole<int>("admin")).Result;
+            // essa parte não funciona
+            await _userManager.AddToRoleAsync(usuarioIdentity, "regular");
 
-            var usuarioRoleResult = _userManager
-                .AddToRoleAsync(usuarioIdentity, "admin").Result;
-
-            if (resultadoIdentity.Result.Succeeded)
+            if (result.Succeeded)
             {
-                var code = _userManager.GenerateEmailConfirmationTokenAsync(usuarioIdentity).Result;
-                var encodedCode = HttpUtility.UrlEncode(code);
-                _emailService.EnviarEmail(new[] {usuarioIdentity.Email}, "Link de ativação", usuarioIdentity.Id, encodedCode);
-                return Result.Ok().WithSuccess(code);
+                // var code = _userManager.GenerateEmailConfirmationTokenAsync(usuarioIdentity).Result;
+               //  var encodedCode = HttpUtility.UrlEncode(code);
+                // _emailService.EnviarEmail(new[] {usuarioIdentity.Email}, "Link de ativação", usuarioIdentity.Id, encodedCode);
+                return Result.Ok().WithSuccess(/*code*/ "Cadastro realizado com sucesso!");
             }
 
             return Result.Fail("Falha ao cadastrar usuário");
