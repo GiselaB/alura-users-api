@@ -13,15 +13,12 @@ public class CadastroService : ICadastroService
 {
     private IMapper _mapper;
     private UserManager<CustomIdentityUser> _userManager;
-    private EmailService _emailService;
 
     public CadastroService(IMapper mapper, 
-        UserManager<CustomIdentityUser> userManager, 
-        EmailService emailService)
+        UserManager<CustomIdentityUser> userManager)
     {
         _mapper = mapper;
         _userManager = userManager;
-        _emailService = emailService;
     }
     public async Task<Result> CadastraUsuario(CreateUsuarioDto usuarioDto)
     {

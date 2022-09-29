@@ -23,10 +23,10 @@ builder.Services.AddIdentity<CustomIdentityUser, IdentityRole<int>>(
     .AddDefaultTokenProviders();
 builder.Host.ConfigureAppConfiguration((context, builder) => builder.AddUserSecrets<Program>());
 builder.Services.AddScoped<ICadastroService, CadastroService>();
-builder.Services.AddScoped<ILoginService, LoginService>();
-builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<ILogoutService, LogoutService>();
-builder.Services.AddScoped<IEmailService, EmailService>();
+builder.Services.AddScoped<ITokenService, TokenService>();
+builder.Services.AddScoped<ILoginService, LoginService>();
+// builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddControllers();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -40,6 +40,12 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+}
+
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<UserDbContext>();
+    db.Database.Migrate();
 }
 
 app.UseHttpsRedirection();

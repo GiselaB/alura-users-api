@@ -9,9 +9,9 @@ namespace Usuarios.Services.Concrete;
 public class LoginService : ILoginService
 {
     private SignInManager<CustomIdentityUser> _signInManager;
-    private TokenService _tokenService;
+    private ITokenService _tokenService;
 
-    public LoginService(SignInManager<CustomIdentityUser> signInManager, TokenService tokenService)
+    public LoginService(SignInManager<CustomIdentityUser> signInManager, ITokenService tokenService)
     {
         _signInManager = signInManager;
         _tokenService = tokenService;
